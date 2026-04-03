@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OUTL1R</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0a;
+  --text: #f5f5f5;
+  --text2: #888;
+  --text3: #444;
+  --red: #ff2a2a;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  padding: 0 40px; height: 70px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+nav.solid { 
+  background: rgba(10,10,10,0.95); 
+  border-bottom-color: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: .08em; color: var(--text);
+  text-decoration: none; line-height: 1;
+}
+.nav-logo span { color: var(--red); }
+.nav-right { display: flex; gap: 32px; align-items: center; }
+.nav-link {
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text); text-decoration: none; cursor: pointer;
+  transition: opacity 0.2s; background: none; border: none;
+  font-family: 'Inter', sans-serif; font-weight: 400;
+  opacity: 0.5;
+}
+.nav-link:hover { opacity: 1; }
+
+/* HERO - CLEAN DARK */
+.hero {
+  height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: flex-start; justify-content: center;
+  padding: 0 8vw;
+  position: relative; overflow: hidden;
+  background: var(--bg);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 120px 120px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 32px;
+  font-weight: 500;
+  position: relative; z-index: 1;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 16vw, 200px);
+  font-weight: 400; line-height: 0.85; color: var(--text);
+  letter-spacing: -0.01em;
+  position: relative; z-index: 1;
+  text-transform: uppercase;
+}
+.hero-title-line {
+  display: block;
+  overflow: hidden;
+}
+.hero-title-line span {
+  display: block;
+  transform: translateY(100%);
+  animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-title-line:nth-child(1) span { animation-delay: 0.1s; }
+.hero-title-line:nth-child(2) span { animation-delay: 0.2s; }
+.hero-title-line:nth-child(3) span { animation-delay: 0.3s; }
+@keyframes reveal {
+  to { transform: translateY(0); }
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--text2);
+}
+.hero-sub {
+  font-size: 13px; color: var(--text2);
+  letter-spacing: .01em; line-height: 1.7;
+  max-width: 340px;
+  margin-top: 56px;
+  position: relative; z-index: 1;
+  opacity: 0;
+  animation: fadeIn 1.2s ease 0.6s forwards;
+}
+.hero-meta {
+  position: absolute; bottom: 60px; left: 8vw;
+  display: flex; gap: 48px;
+  font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--text3);
+  opacity: 0;
+  animation: fadeIn 1.4s ease 0.8s forwards;
+}
+.hero-meta span { color: var(--text2); }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MOOD BAR */
+.mood-bar {
+  position: sticky; top: 70px; z-index: 100;
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 8vw;
+  display: flex; align-items: center; gap: 4px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.mood-bar::-webkit-scrollbar { display: none; }
+.mb-item {
+  padding: 22px 18px; white-space: nowrap;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text3); cursor: pointer;
+  transition: color 0.2s;
+  border: none; background: none;
+  font-family: 'Inter', sans-serif; font-weight: 400;
+  position: relative;
+}
+.mb-item::after {
+  content: '';
+  position: absolute; bottom: 16px; left: 18px; right: 18px;
+  height: 1px;
+  background: var(--red);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.mb-item:hover { color: var(--text2); }
+.mb-item.on { color: var(--text); }
+.mb-item.on::after { transform: scaleX(1); }
+
+/* FEED */
+.feed {
+  max-width: 720px; margin: 0 auto;
+  padding: 120px 32px 160px;
+}
+
+/* QUOTE BLOCK */
+.quote-block {
+  padding: 80px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.quote-block.vis { opacity: 1; transform: translateY(0); }
+.quote-block:last-child { border-bottom: none; }
+
+.qb-mood {
+  font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 32px;
+  font-weight: 500;
+  display: flex; align-items: center; gap: 12px;
+}
+.qb-mood::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--red);
+}
+.qb-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: 1.08; color: var(--text);
+  white-space: pre-line; letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer; 
+  transition: opacity 0.2s;
+}
+.quote-block:hover .qb-text { opacity: 0.75; }
+
+/* size variants */
+.quote-block.size-lg .qb-text { font-size: clamp(42px, 7vw, 72px); }
+.quote-block.size-sm .qb-text { 
+  font-size: clamp(24px, 3.5vw, 32px); 
+  color: var(--text2);
+  letter-spacing: 0.05em;
+}
+.quote-block.size-sm .qb-text:hover { color: var(--text); opacity: 1; }
+
+/* featured */
+.quote-block.size-featured {
+  padding: 120px 0; text-align: center;
+}
+.quote-block.size-featured .qb-mood { justify-content: center; }
+.quote-block.size-featured .qb-mood::before { display: none; }
+.quote-block.size-featured .qb-text { 
+  font-size: clamp(48px, 8vw, 88px); 
+  line-height: 1.05;
+}
+.quote-block.size-featured .qb-divider { margin: 40px auto; }
+.quote-block.size-featured .qb-meta { justify-content: center; }
+
+.qb-divider {
+  width: 1px; height: 32px;
+  background: rgba(255,255,255,0.08);
+  margin: 32px 0;
+}
+.qb-meta { 
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 28px;
+}
+.qb-actions { display: flex; gap: 16px; align-items: center; }
+.qb-like-btn {
+  background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text3); font-family: 'Inter', sans-serif;
+  transition: color 0.15s; padding: 0;
+}
+.qb-like-btn:hover { color: var(--text); }
+.qb-like-btn.liked { color: var(--red); }
+.qb-like-btn .heart { font-size: 14px; }
+.qb-copy-btn {
+  background: none; border: 1px solid rgba(255,255,255,0.08); 
+  padding: 6px 14px; 
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text3); cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+}
+.qb-copy-btn:hover { border-color: var(--text2); color: var(--text); }
+
+/* THOUGHT BLOCK */
+.thought-block {
+  padding: 60px 0 60px 30px; 
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  position: relative;
+}
+.thought-block.vis { opacity: 1; transform: translateY(0); }
+.thought-block::before {
+  content: '';
+  position: absolute; left: 0; top: 60px; bottom: 60px;
+  width: 2px;
+  background: var(--red);
+  opacity: 0.25;
+}
+.thought-text {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 14px; color: var(--text2);
+  line-height: 1.8; letter-spacing: .02em;
+  font-style: italic;
+}
+
+/* MID-FEED CTA */
+.feed-cta {
+  padding: 100px 0; text-align: center; 
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.feed-cta.vis { opacity: 1; transform: translateY(0); }
+.feed-cta-eyebrow {
+  font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 20px; font-weight: 500;
+}
+.feed-cta-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 400;
+  color: var(--text2); line-height: 1.2; margin-bottom: 32px;
+  text-transform: uppercase; letter-spacing: 0.02em;
+}
+.feed-cta-link {
+  display: inline-block; padding: 12px 28px;
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--text2); text-decoration: none; transition: all 0.2s;
+  font-weight: 400;
+}
+.feed-cta-link:hover { 
+  border-color: var(--text); 
+  color: var(--text); 
+  background: rgba(255,255,255,0.02);
+}
+
+/* FULLSCREEN */
+.fullscreen {
+  display: none; position: fixed; inset: 0; z-index: 800;
+  background: rgba(10,10,10,0.98);
+  align-items: center; justify-content: center;
+  padding: 60px 40px; cursor: pointer;
+}
+.fullscreen.open { display: flex; animation: fsin 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes fsin { from{opacity:0; transform: scale(0.95)} to{opacity:1; transform: scale(1)} }
+.fs-inner { max-width: 900px; text-align: center; pointer-events: none; }
+.fs-mood {
+  font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 40px; font-weight: 500;
+}
+.fs-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 10vw, 120px);
+  line-height: 1; color: var(--text); white-space: pre-line;
+  text-transform: uppercase; letter-spacing: 0.02em;
+}
+.fs-close {
+  position: absolute; top: 40px; right: 40px;
+  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--text3); pointer-events: all; cursor: pointer;
+  transition: color 0.15s;
+}
+.fs-close:hover { color: var(--text); }
+.fs-actions {
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 32px; pointer-events: all;
+}
+.fs-action-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--text3); font-family: 'Inter', sans-serif;
+  transition: color 0.15s; padding: 0;
+}
+.fs-action-btn:hover { color: var(--text); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid rgba(255,255,255,0.04);
+  padding: 60px 8vw;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo { 
+  font-family: 'Bebas Neue', sans-serif; 
+  font-size: 24px; letter-spacing: .08em; color: var(--text); 
+}
+.footer-logo span { color: var(--red); }
+.footer-txt { 
+  font-size: 11px; color: var(--text3); 
+  letter-spacing: .05em; line-height: 1.6; text-align: center; 
+}
+.footer-social { display: flex; gap: 24px; }
+.footer-social-link { 
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase; 
+  color: var(--text3); text-decoration: none; transition: color 0.15s; 
+}
+.footer-social-link:hover { color: var(--text); }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 32px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--red);
+  color: var(--text); padding: 12px 28px;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 500;
+  z-index: 9000; pointer-events: none; white-space: nowrap;
+  transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 0; }
+
+@media(max-width:768px) {
+  nav { padding: 0 24px; height: 60px; }
+  .hero { padding: 0 6vw; }
+  .hero-title { font-size: clamp(56px, 18vw, 120px); line-height: 0.88; }
+  .hero-meta { display: none; }
+  .hero-scroll { bottom: 40px; right: 6vw; }
+  .mood-bar { padding: 0 6vw; top: 60px; }
+  .feed { padding: 60px 24px 100px; }
+  .quote-block { padding: 60px 0; }
+  .quote-block.size-featured { padding: 80px 0; }
+  footer { flex-direction: column; gap: 24px; text-align: center; padding: 40px 6vw; }
+}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-logo" href="#">OUTL<span>1</span>R</a>
+  <div class="nav-right">
+    <button class="nav-link" onclick="document.getElementById('feed').scrollIntoView({behavior:'smooth'})">explore</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-eyebrow">est. 2024</div>
+  <h1 class="hero-title">
+    <span class="hero-title-line"><span>FEEL</span></span>
+    <span class="hero-title-line"><span>EVERY<em>THING</em></span></span>
+    <span class="hero-title-line"><span>AT 3AM</span></span>
+  </h1>
+  <p class="hero-sub">raw quotes for the ones who stay up thinking. no filters. just words that hit.</p>
+  <div class="hero-meta">
+    <span>48 quotes</span>
+    <span>6 moods</span>
+    <span>infinite feels</span>
+  </div>
+</div>
+
+<div class="mood-bar">
+  <button class="mb-item on" data-mood="all" onclick="filterMood('all',this)">all</button>
+  <button class="mb-item" data-mood="3am" onclick="filterMood('3am',this)">3am</button>
+  <button class="mb-item" data-mood="heartbreak" onclick="filterMood('heartbreak',this)">heartbreak</button>
+  <button class="mb-item" data-mood="numb" onclick="filterMood('numb',this)">numb</button>
+  <button class="mb-item" data-mood="love" onclick="filterMood('love',this)">love</button>
+  <button class="mb-item" data-mood="survive" onclick="filterMood('survive',this)">surviving</button>
+  <button class="mb-item" data-mood="empty" onclick="filterMood('empty',this)">empty</button>
+</div>
+
+<div class="feed" id="feed"></div>
+
+<footer>
+  <div class="footer-logo">OUTL<span>1</span>R</div>
+  <div class="footer-txt">for the ones who feel too much<br>and say too little</div>
+  <div class="footer-social">
+    <a class="footer-social-link" href="https://instagram.com/OUTL1R" target="_blank">IG</a>
+    <a class="footer-social-link" href="https://tiktok.com/@OUTL1R" target="_blank">TT</a>
+  </div>
+</footer>
+
+<div class="fullscreen" id="fs" onclick="closeFS()">
+  <div class="fs-close" onclick="closeFS()">close</div>
+  <div class="fs-inner">
+    <div class="fs-mood" id="fsMood"></div>
+    <div class="fs-text" id="fsText"></div>
+  </div>
+  <div class="fs-actions">
+    <button class="fs-action-btn" onclick="event.stopPropagation();copyFS()">copy</button>
+    <button class="fs-action-btn" onclick="event.stopPropagation();shareFS()">share</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const QUOTES = [
+  {mood:'3am',size:'lg',text:"i am tired in a way\nthat sleep has stopped fixing.",likes:4821},
+  {mood:'3am',text:"nobody checked on me.\ni said i was okay.\nboth things were true.",likes:3204},
+  {mood:'3am',text:"i think the hardest part\nis not telling anyone\nhow hard the hardest part is.",likes:5678},
+  {mood:'3am',size:'sm',text:"i answer every text.\ni just answer them\nfrom a place you cannot reach.",likes:2891},
+  {mood:'3am',text:"i am not depressed.\ni am just running on\na very old version of okay.",likes:6103},
+  {mood:'3am',size:'featured',text:"i smiled today.\nit did not mean\nwhat it used to.",likes:7342},
+  {mood:'3am',text:"i keep rearranging my room\nlike that will fix\nwhat is wrong with me.",likes:3567},
+  {mood:'3am',size:'sm',text:"some nights i replay conversations\nfrom years ago.\nstill trying to win.",likes:2234},
+  {mood:'3am',text:"the version of me you know\nis the version i built\nso you wouldn't worry.",likes:8920},
+  {mood:'3am',text:"there are people who knew me before.\ni wonder if they would recognize\nwhat is left.",likes:5544},
+  {mood:'3am',size:'sm',text:"i asked how you were doing\nbecause i needed someone\nto ask me first.",likes:4109},
+
+  {mood:'heartbreak',size:'lg',text:"i don't want you back.\ni want back the part of me\ni lost trying to keep you.",likes:9204},
+  {mood:'heartbreak',text:"you never lied to me.\nyou just let me believe things\nyou knew weren't true.",likes:6781},
+  {mood:'heartbreak',size:'featured',text:"we never fought.\nwe just slowly stopped\ntelling each other things.",likes:11342},
+  {mood:'heartbreak',text:"i keep your contact saved.\nnot to text you.\njust so i know not to pick up.",likes:7823},
+  {mood:'heartbreak',size:'sm',text:"the last time i saw you\nwe both pretended\nit wasn't the last time.",likes:5021},
+  {mood:'heartbreak',text:"i gave you the version of me\nnobody else gets.\nyou gave me nothing back.",likes:8834},
+  {mood:'heartbreak',size:'sm',text:"you didn't break my heart.\nyou just quietly\nstopped showing up for it.",likes:12087},
+  {mood:'heartbreak',text:"it wasn't dramatic. there was no fight.\nyou just stopped choosing me\nand eventually i noticed.",likes:9901},
+  {mood:'heartbreak',size:'lg',text:"you made me feel seen\nright up until\nyou looked away.",likes:10234},
+  {mood:'heartbreak',text:"i forgave you.\nnot because you deserved it.\nbecause i needed a way out.",likes:4421},
+
+  {mood:'numb',text:"i am not sad today.\ni am just not anything.\nwhich is its own kind of sad.",likes:7823},
+  {mood:'numb',size:'featured',text:"i used to feel everything.\nnow i just feel\nthe absence of everything.",likes:9456},
+  {mood:'numb',size:'sm',text:"the scary part isn't being empty.\nit's getting comfortable there.",likes:6234},
+  {mood:'numb',text:"i go through the motions so well\nsometimes i forget\ni am going through the motions.",likes:5102},
+  {mood:'numb',text:"i laugh. i answer. i show up.\nnone of it is fake.\nnone of it is whole.",likes:8765},
+  {mood:'numb',size:'lg',text:"i have started saying\ni'm just tired\nbecause it's the closest thing to the truth.",likes:6543},
+  {mood:'numb',size:'sm',text:"some days i am just\nwaiting for the day\nto be over.",likes:4321},
+  {mood:'numb',text:"i am not burnt out.\ni am burnt through.\nthere is a difference.",likes:7890},
+
+  {mood:'love',size:'lg',text:"i loved you at the wrong time\nin the wrong life\nfor exactly the right reasons.",likes:13421},
+  {mood:'love',text:"i still write to you sometimes.\nin notes apps. in drafts.\nnowhere you will ever see.",likes:9876},
+  {mood:'love',size:'featured',text:"the worst part is i would have stayed.\nif you had just asked.\ni would have stayed.",likes:15203},
+  {mood:'love',text:"i don't miss you.\ni miss the person i was\nwhen i thought you were different.",likes:8234},
+  {mood:'love',size:'sm',text:"i looked for you in everyone after.\ni need to stop doing that.",likes:6789},
+  {mood:'love',text:"i was never going to be\nthe person you needed.\nbut i tried like i was.",likes:7654},
+  {mood:'love',size:'sm',text:"i don't hate you.\nthat would require me\nto stop caring.",likes:5432},
+  {mood:'love',text:"i do not miss you.\ni miss the person i was\nwhen i thought you were different.",likes:8021},
+
+  {mood:'survive',size:'featured',text:"i am still here.\nthat is not a small thing.\ni am still here.",likes:18902},
+  {mood:'survive',text:"i did not heal.\ni just learned\nhow to carry it differently.",likes:11234},
+  {mood:'survive',size:'lg',text:"one day you will talk about this\nlike it is something that happened to you\nnot something that is happening.",likes:9876},
+  {mood:'survive',text:"i let some people go quietly.\nno speech. no closure.\njust distance, then silence, then peace.",likes:8765},
+  {mood:'survive',size:'sm',text:"i stopped waiting for an apology\nand just decided\nit happened and i am still here.",likes:6543},
+  {mood:'survive',text:"i started choosing myself\nso quietly\nnobody even noticed it was a revolution.",likes:12345},
+  {mood:'survive',size:'sm',text:"some days i am proud of myself\nfor things no one will ever know\ni had to fight through.",likes:9012},
+
+  {mood:'empty',text:"it is a very specific kind of lonely\nwhen you are surrounded by people\nwho think they know you.",likes:10234},
+  {mood:'empty',size:'featured',text:"everyone thinks i have it together.\nit is the most exhausting thing\ni have ever done.",likes:14567},
+  {mood:'empty',text:"i stopped canceling plans.\ni just stopped making them.\nnobody noticed the difference.",likes:7823},
+  {mood:'empty',size:'lg',text:"i do not need to be fixed.\ni just need someone\nto stop pretending i am fine.",likes:9012},
+  {mood:'empty',size:'sm',text:"i watched three hours of nothing\nbecause silence\nwas too loud.",likes:5678},
+  {mood:'empty',text:"i am not broken.\ni am just running\non very low reserves.",likes:8901},
+  {mood:'empty',size:'sm',text:"i have been fine for so long\ni forgot what fine\nwas never the goal.",likes:6230},
+];
+
+const THOUGHTS = [
+  {text:"some feelings don't have names. they just have 3am.",mood:'3am'},
+  {text:"you can miss someone and still know the distance was right.",mood:'love'},
+  {text:"rest isn't something you earn. it's something you take.",mood:'survive'},
+  {text:"not everything needs a lesson. some things just hurt.",mood:'empty'},
+  {text:"being understood is a privilege not everyone gets.",mood:'numb'},
+  {text:"the people holding the most together are usually the quietest about it.",mood:'3am'},
+  {text:"you're allowed to grieve things that were never officially yours.",mood:'heartbreak'},
+  {text:"sometimes the most radical thing is just still being here.",mood:'survive'},
+  {text:"you didn't fail. you survived something most people can't admit exists.",mood:'empty'},
+  {text:"the silence after someone leaves is a different kind of loud.",mood:'love'},
+];
+
+let likedSet = new Set();
+let fsText = '', fsMood = '';
+
+function fmtNum(n) {
+  return n >= 1000 ? (n/1000).toFixed(1).replace('.0','') + 'k' : String(n);
+}
+
+function buildFeed(mood) {
+  const feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  const quotes = mood === 'all' ? [...QUOTES] : QUOTES.filter(q => q.mood === mood);
+  const thoughts = [...THOUGHTS].filter(t => mood === 'all' || t.mood === mood);
+  let ti = 0;
+  const ctaAt = Math.floor(quotes.length * 0.55);
+
+  quotes.forEach((q, i) => {
+    feed.appendChild(makeQuoteBlock(q));
+    if ((i + 1) % 5 === 0 && ti < thoughts.length) {
+      feed.appendChild(makeThoughtBlock(thoughts[ti++]));
+    }
+    if (i === ctaAt) feed.appendChild(makeCTA());
+  });
+
+  observeAll();
+}
+
+function makeQuoteBlock(q) {
+  const el = document.createElement('div');
+  const sizeClass = q.size ? ' size-' + q.size : '';
+  el.className = 'quote-block' + sizeClass;
+  const id = btoa(encodeURIComponent(q.text.substring(0,20))).replace(/=/g,'');
+  const liked = likedSet.has(id);
+  el.innerHTML = `
+    <div class="qb-mood">${q.mood}</div>
+    <div class="qb-text" onclick="openFS(this,'${id}')">${q.text}</div>
+    <div class="qb-divider"></div>
+    <div class="qb-meta">
+      <div class="qb-actions">
+        <button class="qb-like-btn${liked?' liked':''}" onclick="toggleLike(this,'${id}',${q.likes})">
+          <span class="heart">${liked?'♥':'♡'}</span>
+          <span class="lcount">${fmtNum(q.likes + (liked?1:0))}</span>
+        </button>
+      </div>
+      <button class="qb-copy-btn" onclick="copyBlock(this)">copy</button>
+    </div>
+  `;
+  el._text = q.text;
+  el._mood = q.mood;
+  return el;
+}
+
+function makeThoughtBlock(t) {
+  const el = document.createElement('div');
+  el.className = 'thought-block';
+  el.innerHTML = `<div class="thought-text">${t.text}</div>`;
+  return el;
+}
+
+function makeCTA() {
+  const el = document.createElement('div');
+  el.className = 'feed-cta';
+  el.innerHTML = `
+    <div class="feed-cta-eyebrow">outl1r editor</div>
+    <div class="feed-cta-text">turn pain into content.<br>make reels that hit different.</div>
+    <a class="feed-cta-link" href="#">start creating →</a>
+  `;
+  return el;
+}
+
+function observeAll() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.quote-block, .thought-block, .feed-cta').forEach(el => obs.observe(el));
+}
+
+function filterMood(mood, btn) {
+  document.querySelectorAll('.mb-item').forEach(x => x.classList.remove('on'));
+  btn.classList.add('on');
+  buildFeed(mood);
+  document.getElementById('feed').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleLike(btn, id, base) {
+  const was = likedSet.has(id);
+  was ? likedSet.delete(id) : likedSet.add(id);
+  const liked = likedSet.has(id);
+  btn.classList.toggle('liked', liked);
+  btn.querySelector('.heart').textContent = liked ? '♥' : '♡';
+  btn.querySelector('.lcount').textContent = fmtNum(base + (liked ? 1 : 0));
+}
+
+function copyBlock(btn) {
+  const text = btn.closest('.quote-block')._text;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied';
+    setTimeout(() => btn.textContent = 'copy', 1800);
+    showToast('copied to clipboard');
+  });
+}
+
+function openFS(textEl, id) {
+  const block = textEl.closest('.quote-block');
+  fsText = block._text;
+  fsMood = block._mood;
+  document.getElementById('fsText').textContent = fsText;
+  document.getElementById('fsMood').textContent = fsMood;
+  document.getElementById('fs').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeFS() {
+  document.getElementById('fs').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function copyFS() {
+  navigator.clipboard.writeText(fsText).then(() => showToast('copied to clipboard'));
+}
+function shareFS() {
+  if (navigator.share) {
+    navigator.share({ text: fsText + '\n\n— outl1r.com' });
+  } else {
+    navigator.clipboard.writeText(fsText + '\n\n— outl1r.com').then(() => showToast('copied to share'));
+  }
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFS(); });
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('solid', window.scrollY > 60);
+});
+
+buildFeed('all');
+</script>
+</body>
+</html>
